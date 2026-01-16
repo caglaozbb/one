@@ -1,8 +1,26 @@
 
 document.addEventListener('DOMContentLoaded', function () {
+    const weightColors = {
+        1: '#FFB3BA',
+        2: '#FFDFBA',
+        3: '#FFFFBA',
+        4: '#BAFFC9',
+        5: '#BAE1FF',
+        6: '#A0CED9',
+        7: '#ADF7B6',
+        8: '#FFEE93',
+        9: '#FFC09F',
+        10: '#FF9AA2'
+    };
+
+    function generateRandomWeight() {
+        return Math.floor(Math.random() * 10) + 1;
+    }
+
     let nextWeight = generateRandomWeight();
     let totalLeftWeight = 0;
     let totalRightWeight = 0;
+    let placedWeights = [];
 
     const nextWeightElement = document.getElementById('next-weight');
     const leftWeightDisplay = document.getElementById('left-weight-display');
@@ -14,8 +32,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const tiltAngleDisplay = document.getElementById('tilt-angle-display');
 
     let totalTorque = 0;
-
-    updateNextWeightUI();
 
     if (plank && container && indicator) {
         container.addEventListener('mousemove', function (e) {
@@ -60,24 +76,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
             nextWeight = generateRandomWeight();
             updateNextWeightUI();
+            saveGameState();
         });
-    }
-
-    const weightColors = {
-        1: '#FFB3BA',
-        2: '#FFDFBA',
-        3: '#FFFFBA',
-        4: '#BAFFC9',
-        5: '#BAE1FF',
-        6: '#A0CED9',
-        7: '#ADF7B6',
-        8: '#FFEE93',
-        9: '#FFC09F',
-        10: '#FF9AA2'
-    };
-
-    function generateRandomWeight() {
-        return Math.floor(Math.random() * 10) + 1;
     }
 
     function updateNextWeightUI() {
@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    function addWeight(weight, distFromCenter) {
+    function addWeight(weight, distFromCenter, isReloading = false) {
         const weightElem = document.createElement('div');
         weightElem.className = 'placed-weight';
         weightElem.textContent = weight + 'kg';
@@ -107,6 +107,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         plank.appendChild(weightElem);
 
+        if (!isReloading) {
+            placedWeights.push({ weight, distFromCenter });
+        }
+
         if (distFromCenter < 0) {
             totalLeftWeight += weight;
             if (leftWeightDisplay) leftWeightDisplay.textContent = totalLeftWeight.toFixed(1) + ' kg';
@@ -117,6 +121,38 @@ document.addEventListener('DOMContentLoaded', function () {
 
         totalTorque += weight * distFromCenter;
         updateTilt();
+    }
+
+    function saveGameState() {
+        const state = {
+            nextWeight,
+            placedWeights
+        };
+        localStorage.setItem('seesawState', JSON.stringify(state));
+    }
+
+    function loadGameState() {
+        const savedState = localStorage.getItem('seesawState');
+        if (savedState) {
+            try {
+                const state = JSON.parse(savedState);
+                nextWeight = state.nextWeight || generateRandomWeight();
+                placedWeights = state.placedWeights || [];
+
+                placedWeights.forEach(w => {
+                    addWeight(w.weight, w.distFromCenter, true);
+                });
+
+                if (leftWeightDisplay) leftWeightDisplay.textContent = totalLeftWeight.toFixed(1) + ' kg';
+                if (rightWeightDisplay) rightWeightDisplay.textContent = totalRightWeight.toFixed(1) + ' kg';
+                updateTilt();
+                updateNextWeightUI();
+            } catch (e) {
+                console.error('Failed to load saved state', e);
+            }
+        } else {
+            updateNextWeightUI();
+        }
     }
 
     function updateTilt() {
@@ -141,6 +177,7 @@ document.addEventListener('DOMContentLoaded', function () {
             totalLeftWeight = 0;
             totalRightWeight = 0;
             totalTorque = 0;
+            placedWeights = [];
 
             if (leftWeightDisplay) leftWeightDisplay.textContent = '0.0 kg';
             if (rightWeightDisplay) rightWeightDisplay.textContent = '0.0 kg';
@@ -154,6 +191,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
             nextWeight = generateRandomWeight();
             updateNextWeightUI();
+            saveGameState();
         });
     }
+
+    loadGameState();
 });
