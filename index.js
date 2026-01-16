@@ -11,6 +11,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const container = document.getElementById('seesaw-container');
     const indicator = document.getElementById('weight-indicator');
     const plank = document.querySelector('.seesaw-plank');
+    const tiltAngleDisplay = document.getElementById('tilt-angle-display');
+
+    let totalTorque = 0;
 
     updateNextWeightUI();
 
@@ -106,10 +109,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (distFromCenter < 0) {
             totalLeftWeight += weight;
-            if (leftWeightDisplay) leftWeightDisplay.textContent = totalLeftWeight + ' kg';
+            if (leftWeightDisplay) leftWeightDisplay.textContent = totalLeftWeight.toFixed(1) + ' kg';
         } else {
             totalRightWeight += weight;
-            if (rightWeightDisplay) rightWeightDisplay.textContent = totalRightWeight + ' kg';
+            if (rightWeightDisplay) rightWeightDisplay.textContent = totalRightWeight.toFixed(1) + ' kg';
+        }
+
+        totalTorque += weight * distFromCenter;
+        updateTilt();
+    }
+
+    function updateTilt() {
+
+        const sensitivity = 50;
+        let angle = totalTorque / sensitivity;
+
+        angle = Math.max(-30, Math.min(30, angle));
+
+        if (plank) {
+            plank.style.transform = `rotate(${angle.toFixed(1)}deg)`;
+        }
+
+        if (tiltAngleDisplay) {
+            tiltAngleDisplay.textContent = angle.toFixed(1) + '°';
         }
     }
 });
