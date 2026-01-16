@@ -55,6 +55,19 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    const weightColors = {
+        1: '#FFB3BA',
+        2: '#FFDFBA',
+        3: '#FFFFBA',
+        4: '#BAFFC9',
+        5: '#BAE1FF',
+        6: '#A0CED9',
+        7: '#ADF7B6',
+        8: '#FFEE93',
+        9: '#FFC09F',
+        10: '#FF9AA2'
+    };
+
     function generateRandomWeight() {
         return Math.floor(Math.random() * 10) + 1;
     }
@@ -77,6 +90,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const size = 30 + (weight * 2);
         weightElem.style.width = size + 'px';
         weightElem.style.height = size + 'px';
+        weightElem.style.backgroundColor = weightColors[weight];
 
         const centerOffset = 200;
         const leftPos = centerOffset + distFromCenter;
