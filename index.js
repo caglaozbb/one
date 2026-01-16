@@ -1,16 +1,16 @@
 
 document.addEventListener('DOMContentLoaded', function () {
     const weightColors = {
-        1: '#FFB3BA',
-        2: '#FFDFBA',
-        3: '#FFFFBA',
-        4: '#BAFFC9',
-        5: '#BAE1FF',
-        6: '#A0CED9',
-        7: '#ADF7B6',
-        8: '#FFEE93',
-        9: '#FFC09F',
-        10: '#FF9AA2'
+        1: '#FF3D68',
+        2: '#FF8800',
+        3: '#FFD700',
+        4: '#2ECC71',
+        5: '#3498DB',
+        6: '#00BEC4',
+        7: '#9B59B6',
+        8: '#F1C40F',
+        9: '#E67E22',
+        10: '#E74C3C'
     };
 
 

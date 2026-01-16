@@ -180,7 +180,7 @@ body {
 }
 
 .reset-btn {
-    background-color: #ff4d4d;
+    background-color: #3498db;
     color: white;
     border: none;
     padding: 12px 24px;
@@ -193,7 +193,7 @@ body {
 }
 
 .reset-btn:hover {
-    background-color: #ff3333;
+    background-color: #2980b9;
 }
 
 .reset-btn:active {
