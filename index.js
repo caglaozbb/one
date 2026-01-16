@@ -1,7 +1,12 @@
+
 document.addEventListener('DOMContentLoaded', function () {
     let nextWeight = generateRandomWeight();
+    let totalLeftWeight = 0;
+    let totalRightWeight = 0;
 
     const nextWeightElement = document.getElementById('next-weight');
+    const leftWeightDisplay = document.getElementById('left-weight-display');
+    const rightWeightDisplay = document.getElementById('right-weight-display');
     const indicatorText = document.getElementById('indicator-text');
     const container = document.getElementById('seesaw-container');
     const indicator = document.getElementById('weight-indicator');
@@ -98,5 +103,13 @@ document.addEventListener('DOMContentLoaded', function () {
         weightElem.style.left = leftPos + 'px';
 
         plank.appendChild(weightElem);
+
+        if (distFromCenter < 0) {
+            totalLeftWeight += weight;
+            if (leftWeightDisplay) leftWeightDisplay.textContent = totalLeftWeight + ' kg';
+        } else {
+            totalRightWeight += weight;
+            if (rightWeightDisplay) rightWeightDisplay.textContent = totalRightWeight + ' kg';
+        }
     }
 });
