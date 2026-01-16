@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>one</title>
     <link rel="stylesheet" href="main.css">
 </head>
+
 <body>
     <div class="card">
         <div class="data-display">
@@ -27,7 +29,11 @@
             </div>
         </div>
         <div class="content-area">
-            <div class="seesaw-container">
+            <div class="seesaw-container" id="seesaw-container">
+                <div class="weight-indicator" id="weight-indicator">
+                    <div class="weight-circle" id="indicator-text">0kg</div>
+                    <div class="weight-line"></div>
+                </div>
                 <div class="seesaw-plank">
                     <div class="pivot-point"></div>
                 </div>
@@ -36,4 +42,5 @@
     </div>
     <script src="index.js"></script>
 </body>
+
 </html>
