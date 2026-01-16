@@ -134,4 +134,26 @@ document.addEventListener('DOMContentLoaded', function () {
             tiltAngleDisplay.textContent = angle.toFixed(1) + '°';
         }
     }
+
+    const resetBtn = document.getElementById('reset-seesaw');
+    if (resetBtn) {
+        resetBtn.addEventListener('click', function () {
+            totalLeftWeight = 0;
+            totalRightWeight = 0;
+            totalTorque = 0;
+
+            if (leftWeightDisplay) leftWeightDisplay.textContent = '0.0 kg';
+            if (rightWeightDisplay) rightWeightDisplay.textContent = '0.0 kg';
+            if (tiltAngleDisplay) tiltAngleDisplay.textContent = '0.0°';
+
+            if (plank) {
+                plank.style.transform = 'rotate(0deg)';
+                const placedWeights = plank.querySelectorAll('.placed-weight');
+                placedWeights.forEach(w => w.remove());
+            }
+
+            nextWeight = generateRandomWeight();
+            updateNextWeightUI();
+        });
+    }
 });
