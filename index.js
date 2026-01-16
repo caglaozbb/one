@@ -13,14 +13,13 @@ document.addEventListener('DOMContentLoaded', function () {
         10: '#FF9AA2'
     };
 
-    function generateRandomWeight() {
-        return Math.floor(Math.random() * 10) + 1;
-    }
 
     let nextWeight = generateRandomWeight();
     let totalLeftWeight = 0;
     let totalRightWeight = 0;
     let placedWeights = [];
+    const blingSound = new Audio('bling.mp3');
+    blingSound.volume = 0.5;
 
     const nextWeightElement = document.getElementById('next-weight');
     const leftWeightDisplay = document.getElementById('left-weight-display');
@@ -80,6 +79,10 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    function generateRandomWeight() {
+        return Math.floor(Math.random() * 10) + 1;
+    }
+
     function updateNextWeightUI() {
         if (nextWeightElement) nextWeightElement.textContent = nextWeight + ' kg';
         if (indicatorText) {
@@ -109,6 +112,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (!isReloading) {
             placedWeights.push({ weight, distFromCenter });
+            blingSound.currentTime = 0;
+            blingSound.play().catch(e => console.error("Audio playback failed:", e));
         }
 
         if (distFromCenter < 0) {
